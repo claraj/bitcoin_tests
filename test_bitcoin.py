@@ -29,10 +29,11 @@ class TestBitCoin(TestCase):
              bitcoin.convert_dollars_to_bitcoin(100, 'example url')
 
 
-    # no mock needed here, testing the actual call
-    def test_bad_response_from_server(self):
+    # Mock an error thrown from the api_call function, again, avoid calling real API
+    @patch('bitcoin.api_call', side_effect=BitCoinError)
+    def test_bad_response_from_server(self, mock_api_call):
         with self.assertRaises(BitCoinError):             
-            bitcoin.convert_dollars_to_bitcoin(100, 'not a real url')
+            bitcoin.convert_dollars_to_bitcoin(100, 'example url')
 
 
 if __name__ == '__main__':
